@@ -3,9 +3,7 @@ from tkinter.tix import Select
 from django.forms import *
 from aplicacion.app_paciente.models import Paciente
 
-
 class PacienteForm(ModelForm):
-
     class Meta:
         model = Paciente
         fields = '__all__'
