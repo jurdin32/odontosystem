@@ -1,0 +1,28 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title"><i class="fa fa-plus"></i><strong> {{ title }}</strong></h2>
+            <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="{% url 'app_paciente:crear_paciente' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+
+                {% csrf_token %}
+                {% for datos in form.visible_fields %}
+                    <div class="form-group">
+                        <h6><strong><label for="{{ datos.label }}">{{ datos.label }} :</label></strong></h6>
+                        {{ datos }}
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Guardar</button>
+                <button class="btn btn-danger" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>

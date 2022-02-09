@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'acciones/app_datatable/main_listar_paciente.css' %}">
+    <!-- CSS DATATABLES -->
+    <link href="{% static 'vendors/datatables.net-bs/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block contenido %}
+
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3><small><strong>OdontoSystem / {{ title }}</strong></small></h3>
+                </div>
+
+                <div class="title_right">
+                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar...">
+                            <span class="input-group-btn">
+                      <button class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 ">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><b>{{ title }}</b></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                {% comment %}<li>
+                                    <a class="button btn btn-block btn-default btn-sm">
+                                        <i class="fa fa-plus"></i> Agregar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="close-link">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                </li>{% endcomment %}
+                                <li>
+                                     <button class="btn btn-success" type="button" onclick="modal_crear_paciente('{% url 'app_paciente:crear_paciente' %}')"><i class="fa fa-plus"></i> Agregar</button>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+
+                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+                                <div class="card-box table-responsive">
+                                   {% comment %} <p class="text-muted font-13 m-b-30">
+                                        Listado de Registro de Pacientes
+                                    </p>{% endcomment %}
+                                        <table id="tb_listar_paciente" class="table table-bordered table-striped jambo_table bulk_action" style="width:100%">
+                                        <thead style="background: #3E5367">
+                                        <tr>
+                                            <th class="text-center" style="width: 10%;">Cedula</th>
+                                            <th class="text-left" style="width: 15%;">Nombre</th>
+                                            <th class="text-left" style="width: 20%;">Apellido</th>
+                                            <th class="text-left" style="width: 25%;">Dirección</th>
+                                            <th class="text-center" style="width: 15%;">Ocupación</th>
+                                            <th class="text-center" style="width: 10%;">Telefono</th>
+                                            <th class="text-center" style="width: 5%;">Acciones</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                        {% for paciente in object_list %}
+
+                                            <tr>
+                                                <td class="text-center">0{{ paciente.cedula }}</td>
+                                                <td>{{ paciente.nombre }}</td>
+                                                <td>{{ paciente.apellido }}</td>
+                                                <td>{{ paciente.direccion }}</td>
+                                                <td class="text-center">{{ paciente.ocupacion }}</td>
+                                                <td class="text-center">{{ paciente.telefono }}</td>
+                                                <td class="text-center">
+                                                    <div class="btn-group-sm">
+                                                        <button onclick="modal_editar_paciente('{% url 'app_paciente:editar_paciente' paciente.cedula %}')"
+                                                           class="btn-success btn btn-xs"> <i class="fa fa-edit (alias)"></i>
+                                                        </button>
+                                                        <a href="#"
+                                                           class="btn-danger btn btn-xs"> <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <br/>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="crear_paciente" role="dialog"> </div>
+
+    <div class="modal fade" id="editar_paciente" role="dialog"> </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    <!-- código JS propìo-->
+    <script type="text/javascript" src="{% static 'acciones/app_datatable/main_listar_paciente.js' %}"></script>
+    <!-- código JS DATATABLES-->
+    <script src="{% static 'vendors/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+    <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+    <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+
+{% comment %}    <script src="{% static 'acciones/listados/listar_paciente.js' %}"></script>{% endcomment %}
+
+    <script type="text/javascript">
+    var $ = jQuery.noConflict();
+    function modal_crear_paciente(url){
+        $('#crear_paciente').load(url, function () {
+            $(this).modal('show');
+        });
+    }
+
+    function modal_editar_paciente(url) {
+        $('#editar_paciente').load(url, function (){
+            $(this).modal('show');
+        });
+    }
+
+    </script>
+
+
+
+{% endblock %}
